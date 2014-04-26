@@ -1,5 +1,7 @@
+#-*- coding:utf-8-*-
 import urllib
 import simplejson as json
+from datetime import datetime
 
 def get_product_data(asin):
 	'''use asin to get get_product_data '''
@@ -18,18 +20,35 @@ def get_price_list(product_data):
 			price_date_li.append((offer['info'][0]['price'],offer['info'][0]['timestamp']))
 	return price_date_li
 
+def get_review_time_list(product_data):
+	'''get revie and time infomation from product data'''
+	time_list = []
+
+	for review in product_data['review']:
+		time_list.append(datetime.strptime(review['publishTime'], '%Y-%m-%d %H:%M:%S'))
+	time_list = list(set(time_list))    
+	review_count_dict = {}
+
+	for single_date in time_list[::-1]:
+		review_count_dict[int(single_date.strftime('%Y%m'))] = review_count_dict[int(single_date.strftime('%Y%m'))] + 1 \
+			if review_count_dict.has_key(int(single_date.strftime('%Y%m'))) else 1
+
+	review_count_list = sorted(review_count_dict.iteritems(), key=lambda x:x[0])
+
+	count_data = incre_list(map(lambda x:x[1], review_count_list))
+	date_data = map(lambda x:datetime.strptime(str(x[0]), '%Y%m'), review_count_list)
+	print count_data
+	print date_data
+
+def incre_list(origin_list):
+	'''数组元素递加'''
+	return [sum(origin_list[0: idx]) for idx,ele in enumerate(origin_list)]
+
 if __name__ == '__main__':
 	# product_data = get_product_data('B00D386JBA')
 	product_data = get_product_data('B003FGWY1O')
-	sl = get_star_list(product_data)
-	star_sum = [0,0,0,0,0]
-	for star in sl:
-		if star == 5: star_sum[0]+=1
-		elif star == 4: star_sum[1]+=1
-		elif star == 3: star_sum[2]+=1
-		elif star == 2: star_sum[3]+=1
-		else: star_sum[4]+=1
-	print star_sum
+	# sl = get_star_list(product_data)
 	# print sl
 	# pdl = get_price_list(product_data)
 	# print pdl
+	get_review_time_list(product_data)
