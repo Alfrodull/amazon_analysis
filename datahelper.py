@@ -21,7 +21,15 @@ def get_price_list(product_data):
 if __name__ == '__main__':
 	# product_data = get_product_data('B00D386JBA')
 	product_data = get_product_data('B003FGWY1O')
-	# sl = get_star_list(product_data)
+	sl = get_star_list(product_data)
+	star_sum = [0,0,0,0,0]
+	for star in sl:
+		if star == 5: star_sum[0]+=1
+		elif star == 4: star_sum[1]+=1
+		elif star == 3: star_sum[2]+=1
+		elif star == 2: star_sum[3]+=1
+		else: star_sum[4]+=1
+	print star_sum
 	# print sl
-	pdl = get_price_list(product_data)
-	print pdl
+	# pdl = get_price_list(product_data)
+	# print pdl
