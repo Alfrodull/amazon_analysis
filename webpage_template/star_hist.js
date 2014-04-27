@@ -1,6 +1,6 @@
 $(function () {
 		
-        var char3 = new Highcharts.Chart({
+        var starHist = new Highcharts.Chart({
             chart: {
                 renderTo: 'star_hist',
                 type: 'column'

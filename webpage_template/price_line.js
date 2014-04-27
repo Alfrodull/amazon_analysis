@@ -1,5 +1,5 @@
 $(function () {
-        var char2 = new Highcharts.Chart({
+        var priceLine = new Highcharts.Chart({
             chart: {
                 renderTo: 'price_line',
                 type: 'line',
