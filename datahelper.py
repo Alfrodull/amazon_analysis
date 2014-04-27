@@ -49,6 +49,6 @@ if __name__ == '__main__':
 	product_data = get_product_data('B003FGWY1O')
 	# sl = get_star_list(product_data)
 	# print sl
-	# pdl = get_price_list(product_data)
-	# print pdl
-	get_review_time_list(product_data)
+	pdl = get_price_list(product_data)
+	print pdl
+	# get_review_time_list(product_data)

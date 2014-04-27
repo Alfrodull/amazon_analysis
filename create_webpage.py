@@ -2,11 +2,14 @@ import os
 import sys
 import datahelper
 
-index_template = 'webpage_template/index.html'
-star_hist_template = 'webpage_template/star_hist.js'
+
 index = 'index.html'
 star_hist = 'star_hist.js'
+price_line = 'price_line.js'
 webdir = 'webpages'
+
+def page_template(target):
+	return 'webpage_template/%s' % target
 
 def init(asin):
 	'''init homepage'''
@@ -18,7 +21,7 @@ def init(asin):
 	if os.path.isfile(homepage):
 		os.remove(homepage)
 	try:
-		open(homepage, 'wb').write(open(index_template,'rb').read())
+		open(homepage, 'wb').write(open(page_template(index),'rb').read())
 	except IOError:
 		raise
 
@@ -43,8 +46,34 @@ def draw_star_hist(product_data):
 	try:
 		histfile = open(pstar_hist,'wb')
 		histfile.write('var star_list = %s \n' % str(star_sum))
-		histfile.write(open(star_hist_template,'rb').read())
+		histfile.write(open(page_template(star_hist),'rb').read())
 		histfile.close()
+	except IOError:
+		raise
+
+
+def draw_price_line(product_data):
+	'''input data to price line template'''
+	asin = product_data['ASIN']
+	price_date_li = datahelper.get_price_list(product_data)
+	price_list = []
+	date_list = []
+	for price_date in price_date_li:
+		price_list.append(price_date[0]);
+		date_list.append(str(price_date[1].split()[0]))
+
+	pwebdir = os.path.join(webdir,asin)
+	if not os.path.exists(pwebdir):
+		os.makedirs(pwebdir)
+	pprice_line = os.path.join(pwebdir,price_line)
+	if os.path.isfile(pprice_line):
+		os.remove(pprice_line)
+	try:
+		linefile = open(pprice_line,'wb')
+		linefile.write('var price_list = %s \n' % str(price_list))
+		linefile.write('var date_list = %s \n' % str(date_list))
+		linefile.write(open(page_template(price_line),'rb').read())
+		linefile.close()
 	except IOError:
 		raise
 
@@ -57,5 +86,6 @@ if __name__ == '__main__':
 	if product_data:
 		init(sys.argv[1])
 		draw_star_hist(product_data)
+		draw_price_line(product_data)
 	else:
 		print 'no any data'

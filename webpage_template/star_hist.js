@@ -2,7 +2,7 @@ $(function () {
 		
         var char3 = new Highcharts.Chart({
             chart: {
-                renderTo: 'star_hist_container',
+                renderTo: 'star_hist',
                 type: 'column'
             },
             title: {
