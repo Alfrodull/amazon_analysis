@@ -37,18 +37,33 @@ def get_review_time_list(product_data):
 
 	count_data = incre_list(map(lambda x:x[1], review_count_list))
 	date_data = map(lambda x:datetime.strptime(str(x[0]), '%Y%m'), review_count_list)
-	print count_data
-	print date_data
+
+	date_str = []
+	for t in date_data:
+		date_str.append(t.strftime('%Y-%m'))
+	return (count_data,date_str)
 
 def incre_list(origin_list):
 	'''数组元素递加'''
 	return [sum(origin_list[0: idx]) for idx,ele in enumerate(origin_list)]
+
+def get_category():
+	baseurl = 'http://112.124.1.3:8004/api/commodity/?category_name='
+	category = 'Home & Kitchen>Furniture>Home Office Furniture'
+
+	fullpath = baseurl+urllib.quote(category)
+
+	# data = urllib.urlopen(fullpath).read()
+
+	# print eval(data) 
+	print fullpath
 
 if __name__ == '__main__':
 	# product_data = get_product_data('B00D386JBA')
 	product_data = get_product_data('B003FGWY1O')
 	# sl = get_star_list(product_data)
 	# print sl
-	pdl = get_price_list(product_data)
-	print pdl
-	# get_review_time_list(product_data)
+	# pdl = get_price_list(product_data)
+	# print pdl
+	rtl = get_review_time_list(product_data)
+	print rtl

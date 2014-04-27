@@ -6,6 +6,7 @@ import datahelper
 index = 'index.html'
 star_hist = 'star_hist.js'
 price_line = 'price_line.js'
+review_t_line = 'review_time_line.js'
 webdir = 'webpages'
 
 def page_template(target):
@@ -77,6 +78,27 @@ def draw_price_line(product_data):
 	except IOError:
 		raise
 
+def draw_review_t_line(product_data):
+	'''input data to review-time line template'''
+	asin = product_data['ASIN']
+	review_time = datahelper.get_review_time_list(product_data)
+	count_list = review_time[0]
+	date_list = review_time[1]
+
+	pwebdir = os.path.join(webdir,asin)
+	if not os.path.exists(pwebdir):
+		os.makedirs(pwebdir)
+	preview_t_line = os.path.join(pwebdir,review_t_line)
+	if os.path.isfile(preview_t_line):
+		os.remove(preview_t_line)
+	try:
+		linefile = open(preview_t_line,'wb')
+		linefile.write('var count_list = %s \n' % str(count_list))
+		linefile.write('var date_list = %s \n' % str(date_list))
+		linefile.write(open(page_template(review_t_line),'rb').read())
+		linefile.close()
+	except IOError:
+		raise
 
 
 if __name__ == '__main__':
@@ -87,5 +109,6 @@ if __name__ == '__main__':
 		init(sys.argv[1])
 		draw_star_hist(product_data)
 		draw_price_line(product_data)
+		draw_review_t_line(product_data)
 	else:
 		print 'no any data'
