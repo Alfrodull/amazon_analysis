@@ -16,4 +16,4 @@
 
 
 ----------------------------------
-click [here](./wiki) for more details
+click [here](http://github.com/Alfrodull/amazon_analysis/wiki) for more details
