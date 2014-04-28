@@ -13,3 +13,7 @@
 
 程序会在当前文件夹下建立一个名为“webpages”的文件夹，生成的网页存在以AISN和商品分类的名字命名的子文件夹里  
 网页中图表的生成使用了以javascript编写的[highcharts](www.highcharts.com)图表库，在网页中以在线链接的方式引入了该库，所以请在能正常连接到网络时查看图表。  
+
+
+----------------------------------
+click [here](./wiki) for more details
