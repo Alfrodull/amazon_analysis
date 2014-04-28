@@ -47,23 +47,36 @@ def incre_list(origin_list):
 	'''数组元素递加'''
 	return [sum(origin_list[0: idx]) for idx,ele in enumerate(origin_list)]
 
-def get_category():
+def get_category(category,pages):
+	'''返回category分类下，从第一页到第pages页的数据，每页20条'''
 	baseurl = 'http://112.124.1.3:8004/api/commodity/?category_name='
-	category = 'Home & Kitchen>Furniture>Home Office Furniture'
+	condition = '&page='
+	data = []
 
-	fullpath = baseurl+urllib.quote(category)
+	for i in range(1,int(pages)+1):
+		fullpath = baseurl+urllib.quote(category)+condition+str(i)
+		datapiece = json.loads(urllib.urlopen(fullpath).read())
+		for item in datapiece:
+			data.append(item)
+	return data
 
-	# data = urllib.urlopen(fullpath).read()
-
-	# print eval(data) 
-	print fullpath
+def get_cate_star(cate_data):
+	star_info_li = []
+	for data in cate_data:
+		star_info_li.append(data['stats_info']['star_info'])
+	return star_info_li
+	
 
 if __name__ == '__main__':
 	# product_data = get_product_data('B00D386JBA')
-	product_data = get_product_data('B003FGWY1O')
+	# product_data = get_product_data('B003FGWY1O')
 	# sl = get_star_list(product_data)
 	# print sl
 	# pdl = get_price_list(product_data)
 	# print pdl
-	rtl = get_review_time_list(product_data)
-	print rtl
+	# rtl = get_review_time_list(product_data)
+	# print rtl
+	category = 'Home & Kitchen>Furniture>Home Office Furniture'
+	cate_date = get_category(category,1)
+	sil = get_cate_star(cate_date)
+	print sil

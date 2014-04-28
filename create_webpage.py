@@ -3,7 +3,7 @@ import sys
 import datahelper
 
 
-index = 'index.html'
+com_page = 'commodity.html'
 star_hist = 'star_hist.js'
 price_line = 'price_line.js'
 review_t_line = 'review_time_line.js'
@@ -18,11 +18,11 @@ def init(asin):
 	pwebdir = os.path.join(webdir,asin)
 	if not os.path.exists(pwebdir):
 		os.makedirs(pwebdir)
-	homepage = os.path.join(pwebdir,index)
+	homepage = os.path.join(pwebdir,com_page)
 	if os.path.isfile(homepage):
 		os.remove(homepage)
 	try:
-		open(homepage, 'wb').write(open(page_template(index),'rb').read())
+		open(homepage, 'wb').write(open(page_template(com_page),'rb').read())
 	except IOError:
 		raise
 
@@ -103,7 +103,8 @@ def draw_review_t_line(product_data):
 
 if __name__ == '__main__':
 	if len(sys.argv) <= 1:
-		sys.argv.append('B003FGWY1O')
+		default_asin = 'B003FGWY1O'
+		sys.argv.append(default_asin)
 	product_data = datahelper.get_product_data(sys.argv[1])
 	if product_data:
 		init(sys.argv[1])
