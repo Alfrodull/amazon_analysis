@@ -8,21 +8,36 @@ star_hist = 'star_hist.js'
 price_line = 'price_line.js'
 review_t_line = 'review_time_line.js'
 webdir = 'webpages'
+com_info = 'com_info.js'
 
 def page_template(target):
 	return 'webpage_template/%s' % target
 
-def init(asin):
+def init(product_data):
 	'''init homepage'''
+	asin = product_data['ASIN']
+	com_name = product_data['productInfo'][0]['name']
+	img_link = product_data['productInfo'][0]['img']
+	zlink = 'http://www.amazon.com/dp/'+asin
 
 	pwebdir = os.path.join(webdir,asin)
 	if not os.path.exists(pwebdir):
 		os.makedirs(pwebdir)
+
 	homepage = os.path.join(pwebdir,com_page)
+	pcom_info = os.path.join(pwebdir,com_info)
 	if os.path.isfile(homepage):
 		os.remove(homepage)
+	if os.path.isfile(pcom_info):
+		os.remove(pcom_info)
 	try:
 		open(homepage, 'wb').write(open(page_template(com_page),'rb').read())
+		infofile = open(pcom_info,'wb')
+		infofile.write('var com_name = \"%s\"\n\
+						var zlink = \"%s\"\n' % \
+						(com_name,zlink))
+		infofile.write(open(page_template(com_info),'rb').read())
+		infofile.close()
 	except IOError:
 		raise
 
@@ -107,7 +122,7 @@ if __name__ == '__main__':
 		sys.argv.append(default_asin)
 	product_data = datahelper.get_product_data(sys.argv[1])
 	if product_data:
-		init(sys.argv[1])
+		init(product_data)
 		draw_star_hist(product_data)
 		draw_price_line(product_data)
 		draw_review_t_line(product_data)

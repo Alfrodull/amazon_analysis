@@ -65,7 +65,17 @@ def get_cate_star(cate_data):
 	for data in cate_data:
 		star_info_li.append(data['stats_info']['star_info'])
 	return star_info_li
-	
+
+def get_revNo_avgstar(cate_data):
+	infolist = []
+	for data in cate_data:
+		item = {}
+		item['ASIN'] = data['ASIN']
+		item['review_count'] = data['stats_info']['review_count']
+		item['avg_star'] = data['stats_info']['avg_info']
+		infolist.append(item)
+	return infolist
+
 
 if __name__ == '__main__':
 	# product_data = get_product_data('B00D386JBA')
